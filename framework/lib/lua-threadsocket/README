@@ -1,0 +1,29 @@
+--发送登陆
+local loginmsg = 
+{
+    cmd = 1,
+    sub = 2,
+    msg =
+    {
+        name = "test2",
+        pwd = "2",
+    }
+}
+
+local threadsocket = require "threadsocket"
+local function testconnect( tag )
+    threadsocket.ctor("127.0.0.1",8001,tag,3,3,3)
+    threadsocket.start(tag)
+    local name = "test" .. tag
+    loginmsg.msg.name = name
+    local json = require "json"
+    threadsocket.send(tag,json.encode(loginmsg))
+    skynet.sleep(20)
+    local ret = threadsocket.get(tag)
+    print("tag",tag,",recv  = ",ret)
+    dump(json.decode(ret),"recv table tag= " ..tag,10)
+end
+
+for i=1,1 do
+    skynet.fork(testconnect,i)
+end

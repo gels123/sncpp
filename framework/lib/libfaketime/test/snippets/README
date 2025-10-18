@@ -1,0 +1,72 @@
+Testing Interception with Snippets
+==================================
+
+Faketime intercepts some C library functions and system calls.  We
+want to make it easier to apply certain generic tests across many
+different functions.  We do that with snippets of C, which each can be
+applied in multiple testing frameworks.
+
+Most snippets are just a minimalist invocation of a single function or
+syscall that is likely to be intercepted by libfaketime, though it's
+possible to test more complex snippets too.
+
+Including a New Snippet
+-----------------------
+
+To cover a new bit of intercepted functionality, supply a C snippet in
+this directory named `FOO.c` (the name FOO should conform to C
+function names -- letters, numbers, and underscores; if you're testing
+interception of a single function, the simplest thing is to name
+snippet file after the intercepted function name).
+
+This file should contain a small bit of code that exercises the
+functionality in question.  It should be self-contained, and it should
+produce some kind of description of what happened to stdout.  The data
+sent to stdout should include the const char* "where" value (which is
+an indication of which test framework is using the snippet).  Take a
+look at getpid.c for a simple example.
+
+If the snippet needs additional #include headers, please add them
+in `include_headers.h`. These #includes will be used by every snippet,
+so try to keep it minimal.
+
+Snippet Testing Frameworks
+--------------------------
+
+We have the following frameworks that use the snippets:
+
+### Variable Data
+
+Most functionality intercepted by libfaketime will normally produce
+variant output when invoked multiple times across the span of a few
+seconds by different processes.  But if `FAKETIME` (or an analogous
+variable like `FAKERANDOM_SEED`) is set, the output data should remain
+constant.
+
+If this describes the functionality in a new snippet `FOO.c`, please
+also drop a single-line file `FOO.variable` in this directory, where
+the first word of the line is the variable that should hold the output
+constant, and the rest of the line is the value of that variable.
+
+See the `test_variable_data` target in `test/Makefile` for how this is
+implemented.
+
+### Library Constructors
+
+Library constructor routines are run by ld.so before the main process
+is launched.  If the LD_PRELOADed libfaketime is masking a symbol from
+libc, and another library has a constructor routine that invokes that
+symbol, it might get called before libfaketime has had a chance to
+initialize its followup pointers to the actual libc functionality.
+
+This framework is applied automatically to all snippets.
+
+See the `test_library_constructors` target in `test/Makefile` for how
+this is implemented.
+ 
+Adding a New Framework
+----------------------
+
+If you want to add a new framework that tests across all snippets,
+implement it in a few lines of `test/Makefile` and document it in the
+section above.

@@ -1,0 +1,34 @@
+$#include "MmoMap.h"
+$#include "NpcInfo.h"
+
+int mmoArray[2];
+
+typedef struct mmoStInfo {
+    int x;
+    int y;
+    char str[64];
+} mmoStInfo;
+
+extern mmoStInfo tmpInfo;
+
+class MmoMap {
+public:
+    MmoMap();
+    MmoMap(int sizeX, int sizeY);
+    virtual ~MmoMap();
+    void GetSize(int *x = 0, int *y = 0);
+    int GetSizeX();
+    int GetSizeY();
+    mmoStInfo *GetInfo();
+    static int GetVersion();
+};
+
+class NpcInfo {
+public:
+    NpcInfo();
+    virtual ~NpcInfo();
+    bool OnTick();
+
+    int npcId;      //ID
+    int hunger;     //饥饿感
+};

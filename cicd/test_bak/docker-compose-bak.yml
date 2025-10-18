@@ -1,0 +1,223 @@
+version: '3'
+services:
+  redis-master:
+    image: bitnami/redis:6.2.16
+    container_name: redis-master
+    ports:
+      - "6381:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=pwd123
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,KEYS
+    volumes:
+      - /Users/gels/Documents/work/dockerapp/redis-data/master:/bitnami/redis/data
+    networks:
+      - net4gamesvr
+
+  redis-slave1:
+    image: bitnami/redis:6.2.16
+    container_name: redis-slave1
+    depends_on:
+      - redis-master
+    ports:
+      - "6382:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_PASSWORD=pwd123 
+      - REDIS_PASSWORD=pwd123 
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,KEYS
+    volumes:
+      - /Users/gels/Documents/work/dockerapp/redis-data/slave1:/bitnami/redis/data
+    networks:
+      - net4gamesvr
+
+  redis-slave2:
+    image: bitnami/redis:6.2.16
+    container_name: redis-slave2
+    depends_on:
+      - redis-master
+    ports:
+      - "6383:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_PASSWORD=pwd123 
+      - REDIS_PASSWORD=pwd123 
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,KEYS
+    volumes:
+      - /Users/gels/Documents/work/dockerapp/redis-data/slave2:/bitnami/redis/data
+    networks:
+      - net4gamesvr
+
+  redis-master-sentinel1:
+    image: bitnami/redis:6.2.16
+    container_name: redis-master-sentinel1
+    depends_on:
+      - redis-master
+      - redis-slave1
+      - redis-slave2
+    ports:
+      - "26381:26379"
+    environment:
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
+      - REDIS_SENTINEL_HOST=redis-master
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "protected-mode no" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel auth-pass mymaster pwd123" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel monitor mymaster redis-master 6379 2" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel announce-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds mymaster 30000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel failover-timeout mymaster 60000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel parallel-syncs mymaster 1" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            redis-sentinel /opt/bitnami/redis/etc/sentinel.conf'
+    volumes:
+      - /Users/gels/Documents/work/dockerapp/redis-data/sentinel1:/bitnami/redis/data
+    networks:
+      - net4gamesvr
+  
+  redis-master-sentinel2:
+    image: bitnami/redis:6.2.16
+    container_name: redis-master-sentinel2
+    depends_on:
+      - redis-master
+      - redis-slave1
+      - redis-slave2
+    ports:
+      - "26382:26379"
+    environment:
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
+      - REDIS_SENTINEL_HOST=redis-master
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "protected-mode no" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel auth-pass mymaster pwd123" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel monitor mymaster redis-master 6379 2" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel announce-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds mymaster 30000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel failover-timeout mymaster 60000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel parallel-syncs mymaster 1" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            redis-sentinel /opt/bitnami/redis/etc/sentinel.conf'
+    volumes:
+      - /Users/gels/Documents/work/dockerapp/redis-data/sentinel2:/bitnami/redis/data
+    networks:
+      - net4gamesvr
+
+  redis-master-sentinel3:
+    image: bitnami/redis:6.2.16
+    container_name: redis-master-sentinel3
+    depends_on:
+      - redis-master
+      - redis-slave1
+      - redis-slave2
+    ports:
+      - "26383:26379"
+    environment:
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
+      - REDIS_SENTINEL_HOST=redis-master
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "protected-mode no" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel auth-pass mymaster pwd123" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel monitor mymaster redis-master 6379 2" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel announce-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds mymaster 30000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel failover-timeout mymaster 60000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel parallel-syncs mymaster 1" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            redis-sentinel /opt/bitnami/redis/etc/sentinel.conf'
+    volumes:
+      - /Users/gels/Documents/work/dockerapp/redis-data/sentinel3:/bitnami/redis/data
+    networks:
+      - net4gamesvr
+  
+  # mongodb-node1:
+  #   image: bitnami/mongodb:5.0.24
+  #   container_name: mongodb-node1
+  #   ports:
+  #     - "27017:27017"
+  #   environment:
+  #     - MONGODB_ROOT_USER=root
+  #     - MONGODB_ROOT_PASSWORD=root123
+  #     - MONGODB_REPLICA_SET_MODE=primary
+  #     - MONGODB_ADVERTISED_HOSTNAME=mongodb-node1
+  #     - MONGODB_REPLICA_SET_KEY=key-mongodb-node1-replicaset
+  #   volumes:
+  #     - /Users/gels/Documents/work/dockerapp/mongodb-node1:/bitnami/mongodb
+  #   networks:
+  #     - net4gamesvr
+
+  # mongodb-node1-shard1:
+  #   image: bitnami/mongodb:5.0.24
+  #   container_name: mongodb-node1-shard1
+  #   depends_on:
+  #     - mongodb-node1
+  #   ports:
+  #     - "27018:27017"
+  #   environment:
+  #     - MONGODB_REPLICA_SET_MODE=secondary
+  #     - MONGODB_ADVERTISED_HOSTNAME=mongodb-node1-shard1
+  #     - MONGODB_REPLICA_SET_KEY=key-mongodb-node1-replicaset
+  #     - MONGODB_INITIAL_PRIMARY_HOST=mongodb-node1
+  #     - MONGODB_INITIAL_PRIMARY_PORT_NUMBER=27017
+  #     - MONGODB_INITIAL_PRIMARY_ROOT_USER=root
+  #     - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=root123
+  #   volumes:
+  #     - /Users/gels/Documents/work/dockerapp/mongodb-node1-shard1:/bitnami/mongodb
+  #   networks:
+  #     - net4gamesvr
+
+  # mongodb-node1-shard2:
+  #   image: bitnami/mongodb:5.0.24
+  #   container_name: mongodb-node1-shard2
+  #   depends_on:
+  #     - mongodb-node1
+  #   ports:
+  #     - "27019:27017"
+  #   environment:
+  #     - MONGODB_REPLICA_SET_MODE=secondary
+  #     - MONGODB_ADVERTISED_HOSTNAME=mongodb-node1-shard2
+  #     - MONGODB_REPLICA_SET_KEY=key-mongodb-node1-replicaset
+  #     - MONGODB_INITIAL_PRIMARY_HOST=mongodb-node1
+  #     - MONGODB_INITIAL_PRIMARY_PORT_NUMBER=27017
+  #     - MONGODB_INITIAL_PRIMARY_ROOT_USER=root
+  #     - MONGODB_INITIAL_PRIMARY_ROOT_PASSWORD=root123
+  #   volumes:
+  #     - /Users/gels/Documents/work/dockerapp/mongodb-node1-shard2:/bitnami/mongodb
+  #   networks:
+  #     - net4gamesvr
+
+
+
+  elasticsearch-7.17.10:
+    image: bitnami/elasticsearch:7.17.10
+    container_name: elasticsearch-7.17.10
+    ports:
+      - "9201:9200"
+    environment:
+      - ELASTICSEARCH_PASSWORD=elastic
+      - ELASTICSEARCH_MAX_ALLOWED_MEMORY=512m
+    ulimits:
+      memlock:
+          soft: -1
+          hard: -1
+      nofile:
+          soft: 65536
+          hard: 65536
+    volumes:
+      - /Users/gels/Documents/work/dockerapp/elasticsearch-7.17.10-data:/bitnami/elasticsearch/data
+    networks:
+      - net4gamesvr
+
+
+
+networks:
+  net4gamesvr:
+    ipam:
+      driver: default
+      

@@ -1,0 +1,253 @@
+version: '3'
+services:
+  #########################################################redis-sentinel############################################################
+  redis-master:
+    image: bitnami/redis:6.2.16
+    container_name: redis-master
+    ports:
+      - "6381:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+      - REDIS_PASSWORD=pwd123
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,KEYS
+    volumes:
+      - ~/dockerapp/redis/master/data:/bitnami/redis/data
+      - ~/dockerapp/redis/master/logs:/opt/bitnami/redis/logs
+    networks:
+      - net4gamesvr
+
+  redis-slave1:
+    image: bitnami/redis:6.2.16
+    container_name: redis-slave1
+    depends_on:
+      - redis-master
+    ports:
+      - "6382:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_PASSWORD=pwd123 
+      - REDIS_PASSWORD=pwd123 
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,KEYS
+    volumes:
+      - ~/dockerapp/redis/slave1/data:/bitnami/redis/data
+      - ~/dockerapp/redis/slave1/logs:/opt/bitnami/redis/logs
+    networks:
+      - net4gamesvr
+
+  redis-slave2:
+    image: bitnami/redis:6.2.16
+    container_name: redis-slave2
+    depends_on:
+      - redis-master
+    ports:
+      - "6383:6379"
+    environment:
+      - REDIS_REPLICATION_MODE=slave
+      - REDIS_MASTER_HOST=redis-master
+      - REDIS_MASTER_PORT_NUMBER=6379
+      - REDIS_MASTER_PASSWORD=pwd123 
+      - REDIS_PASSWORD=pwd123 
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,KEYS
+    volumes:
+      - ~/dockerapp/redis/slave2/data:/bitnami/redis/data
+      - ~/dockerapp/redis/slave2/logs:/opt/bitnami/redis/logs
+    networks:
+      - net4gamesvr
+
+  redis-master-sentinel1:
+    image: bitnami/redis:6.2.16
+    container_name: redis-master-sentinel1
+    depends_on:
+      - redis-master
+      - redis-slave1
+      - redis-slave2
+    ports:
+      - "26381:26379"
+    environment:
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
+      - REDIS_SENTINEL_HOST=redis-master
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "protected-mode no" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel auth-pass mymaster pwd123" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel monitor mymaster redis-master 6379 2" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel announce-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds mymaster 30000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel failover-timeout mymaster 60000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel parallel-syncs mymaster 1" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            redis-sentinel /opt/bitnami/redis/etc/sentinel.conf'
+    volumes:
+      - ~/dockerapp/redis/sentinel1/data:/bitnami/redis/data
+      - ~/dockerapp/redis/sentinel1/logs:/opt/bitnami/redis/logs
+    networks:
+      - net4gamesvr
+  
+  redis-master-sentinel2:
+    image: bitnami/redis:6.2.16
+    container_name: redis-master-sentinel2
+    depends_on:
+      - redis-master
+      - redis-slave1
+      - redis-slave2
+    ports:
+      - "26382:26379"
+    environment:
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
+      - REDIS_SENTINEL_HOST=redis-master
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "protected-mode no" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel auth-pass mymaster pwd123" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel monitor mymaster redis-master 6379 2" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel announce-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds mymaster 30000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel failover-timeout mymaster 60000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel parallel-syncs mymaster 1" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            redis-sentinel /opt/bitnami/redis/etc/sentinel.conf'
+    volumes:
+      - ~/dockerapp/redis/sentinel2/data:/bitnami/redis/data
+      - ~/dockerapp/redis/sentinel2/logs:/opt/bitnami/redis/logs
+    networks:
+      - net4gamesvr
+
+  redis-master-sentinel3:
+    image: bitnami/redis:6.2.16
+    container_name: redis-master-sentinel3
+    depends_on:
+      - redis-master
+      - redis-slave1
+      - redis-slave2
+    ports:
+      - "26383:26379"
+    environment:
+      - REDIS_SENTINEL_MASTER_NAME=mymaster
+      - REDIS_SENTINEL_HOST=redis-master
+    command: >
+      sh -c 'echo "bind 0.0.0.0" > /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "protected-mode no" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel auth-pass mymaster pwd123" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel monitor mymaster redis-master 6379 2" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel resolve-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel announce-hostnames yes" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel down-after-milliseconds mymaster 30000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel failover-timeout mymaster 60000" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            echo "sentinel parallel-syncs mymaster 1" >> /opt/bitnami/redis/etc/sentinel.conf &&
+            redis-sentinel /opt/bitnami/redis/etc/sentinel.conf'
+    volumes:
+      - ~/dockerapp/redis/sentinel3/data:/bitnami/redis/data
+      - ~/dockerapp/redis/sentinel3/logs:/opt/bitnami/redis/logs
+    networks:
+      - net4gamesvr
+
+
+
+  # #########################################################mongodb-cluster############################################################ 
+  mongodb-node1:
+    image: mongodb/mongodb-community-server:6.0.15-ubi8
+    hostname: mongodb-node1
+    container_name: mongodb-node1
+    ports:
+      - "27021:27017"
+    # entrypoint: >
+    #   /bin/bash -c '
+    #   openssl rand -base64 756 > /config/keyfile.key &&
+    #   chmod 600 /config/keyfile.key &&
+    #   chown 999:root /config/keyfile.key'
+    # command: ["mongod", "--bind_ip_all", "--port", "27017", "--logappend"] 
+    command: ["mongod", "--bind_ip_all", "--port", "27017", "--logappend", "--replSet", "rs0", "--keyFile", "/config/keyfile.key"] 
+    environment:
+      - MONGODB_INITDB_ROOT_USERNAME=root
+      - MONGODB_INITDB_ROOT_PASSWORD=root123
+    healthcheck:
+      test: mongosh
+        -u $${MONGODB_INITDB_ROOT_USERNAME}
+        -p $${MONGODB_INITDB_ROOT_PASSWORD}
+        --eval "try { rs.status() } catch (err) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongodb-node1:27017',priority:1},{_id:1,host:'mongodb-node2:27017',priority:0.5},{_id:2,host:'mongodb-node3:27017',priority:0.5}]}) }" | mongosh --port 27017 --quiet
+      interval: 10s
+      timeout: 30s
+      start_period: 1s
+      retries: 30
+    volumes:
+      - ~/dockerapp/config/keyfile.key:/config/keyfile.key
+      - ~/dockerapp/mongodb/node1/db:/data/db
+      - ~/dockerapp/mongodb/node1/configdb:/data/configdb
+      - ~/dockerapp/mongodb/node1/log:/data/log
+    depends_on:
+      - mongodb-node2
+      - mongodb-node3
+    networks:
+      - net4gamesvr
+    restart: unless-stopped
+
+  mongodb-node2:
+    image: mongodb/mongodb-community-server:6.0.15-ubi8
+    hostname: mongodb-node2
+    container_name: mongodb-node2
+    ports:
+      - "27022:27017"
+    command: ["mongod", "--bind_ip_all", "--port", "27017", "--logappend", "--replSet", "rs0", "--keyFile", "/config/keyfile.key"] 
+    environment:
+      - MONGODB_INITDB_ROOT_USERNAME=root
+      - MONGODB_INITDB_ROOT_PASSWORD=root123
+    volumes:
+      - ~/dockerapp/config/keyfile.key:/config/keyfile.key
+      - ~/dockerapp/mongodb/node2/db:/data/db
+      - ~/dockerapp/mongodb/node2/configdb:/data/configdb
+      - ~/dockerapp/mongodb/node2/log:/data/log
+    networks:
+      - net4gamesvr
+    restart: unless-stopped
+
+  mongodb-node3:
+    image: mongodb/mongodb-community-server:6.0.15-ubi8
+    hostname: mongodb-node3
+    container_name: mongodb-node3
+    ports:
+      - "27023:27017"
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017", --logappend, "--keyFile", "/config/keyfile.key"] 
+    environment:
+      - MONGODB_INITDB_ROOT_USERNAME=root
+      - MONGODB_INITDB_ROOT_PASSWORD=root123
+    volumes:
+      - ~/dockerapp/config/keyfile.key:/config/keyfile.key
+      - ~/dockerapp/mongodb/node3/db:/data/db
+      - ~/dockerapp/mongodb/node3/configdb:/data/configdb
+      - ~/dockerapp/mongodb/node3/log:/data/log
+    networks:
+      - net4gamesvr
+    restart: unless-stopped
+
+
+  #########################################################elasticsearch############################################################
+  elasticsearch-7.17.10:
+    image: bitnami/elasticsearch:7.17.10
+    container_name: elasticsearch-7.17.10
+    ports:
+      - "9201:9200"
+    environment:
+      - ELASTICSEARCH_PASSWORD=elastic
+      - ELASTICSEARCH_MAX_ALLOWED_MEMORY=512m
+    ulimits:
+      memlock:
+          soft: -1
+          hard: -1
+      nofile:
+          soft: 65536
+          hard: 65536
+    volumes:
+      - ~/dockerapp/elasticsearch/data:/bitnami/elasticsearch/data
+      - ~/dockerapp/elasticsearch/logs:/opt/bitnami/elasticsearch/logs
+    networks:
+      - net4gamesvr
+
+
+
+networks:
+  net4gamesvr:
+    ipam:
+      driver: default
+

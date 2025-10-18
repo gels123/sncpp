@@ -1,0 +1,4 @@
+
+local mysqlaux = require "mysqlaux"
+local sql = "select * from table"
+mysqlaux.quote_sql_str(str)
