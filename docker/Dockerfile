@@ -1,4 +1,5 @@
-FROM debian:12
+# FROM debian:12
+FROM ubuntu:22.04
 
 COPY ./bin /apps/snpp/bin
 COPY ./framework /apps/snpp/framework

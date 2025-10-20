@@ -21,7 +21,8 @@ echo "启动编译容器并编译工程"
 if docker ps -a --format "table {{.Names}}" | grep -q "debain_compile"; then
     docker rm -f debain_compile
 fi
-docker run --name debain_compile -itd -v $(pwd)/..:/compile debian:12
+# docker run --name debain_compile -itd -v $(pwd)/..:/compile debian:12
+docker run --name debain_compile -itd -v $(pwd)/..:/compile ubuntu:22.04
 docker cp $compile_file debain_compile:/compile/$compile_file
 docker exec -it debain_compile sh /compile/$compile_file
 rm -f $compile_file
