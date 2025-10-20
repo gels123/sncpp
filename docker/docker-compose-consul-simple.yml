@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  consul:
+    image: consul:1.15.4
+    container_name: consul
+    hostname: consul
+    command: >
+      agent -server 
+      -bootstrap 
+      -ui 
+      -client=0.0.0.0 
+      -bind=0.0.0.0 
+      -data-dir=/consul/data
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    volumes:
+      - consul-data:/consul/data
+    environment:
+      - CONSUL_HTTP_ADDR=http://0.0.0.0:8500
+    networks:
+      - consul-network
+    restart: unless-stopped
+
+volumes:
+  consul-data:
+
+networks:
+  consul-network:
+    driver: bridge

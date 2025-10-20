@@ -1,0 +1,20 @@
+# 工程根目录运行: 
+# docker-compose -f ./docker/docker-compose.yml up -d
+# docker-compose -f ./docker/docker-compose.yml down
+version: '3.8'
+services:
+  snpp-gameserver:
+    image: snpp
+    container_name: snpp-gameserver
+    volumes:
+      - ${PWD}/app-gameserver:/apps/snpp/app
+      - ${PWD}/framework:/apps/snpp/framework
+      - ${PWD}/logs/gameserver:/apps/snpp/app/logs
+    environment:
+      - TZ=UTC
+    networks:
+      - snpp-network
+
+networks:
+  snpp-network:
+    driver: bridge

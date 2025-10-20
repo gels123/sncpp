@@ -133,7 +133,10 @@ linux:
 	@echo "========== make tolua++ end =========="
 
 	@echo "========== copy libs & rm *.o start =========="
-	find ./lib -name "*.so" | xargs -I {} mv -f {} ./bin
+	find ./lib -name "*.so" | xargs -I {} mv -f {} ../bin
+	find ./lib -name "*.a" | xargs -I {} mv -f {} ../bin
+	mv ./skynet/skynet ../bin
+	mv ./skynet/3rd/lua/lua ../bin
 	find ./ -name *.o | xargs rm -f
 	@echo "========== copy libs & rm *.o end =========="
 
@@ -257,7 +260,10 @@ darwin:
 	@echo "========== make tolua++ end =========="
 
 	@echo "========== copy libs & rm *.o start =========="
-	find ./lib -name "*.so" | xargs -I {} mv -f {} ./bin
+	find ./lib -name "*.so" | xargs -I {} mv -f {} ../bin
+	find ./lib -name "*.a" | xargs -I {} mv -f {} ../bin
+	mv ./skynet/skynet ../bin
+	mv ./skynet/3rd/lua/lua ../bin
 	find ./ -name *.o | xargs rm -f
 	@echo "========== copy libs & rm *.o end =========="
 
