@@ -1,0 +1,48 @@
+################################### rpg模块协议[701-800] ###################################
+#坐标数据结构
+.sMove {
+    t 0 : double
+    x 1 : double
+    z 2 : double
+    vx 3 : double
+    vz 4 : double
+}
+
+#请求rpg信息
+reqRpgInfo 701 {
+    response {
+        code 0 : integer
+    }
+}
+
+#请求进入地图
+reqRpgEnter 702 {
+    request {
+        tp 0 : integer
+        move 1 : sMove
+    }
+    response {
+        code 0 : integer
+        tp 1 : integer
+        move 2 : sMove
+        mapid 3 : integer
+    }
+}
+
+#请求退出地图
+reqRpgExit 703 {
+    response {
+        code 0 : integer
+    }
+}
+
+#请求移动
+reqRpgMove 704 {
+    request {
+        move 0 : sMove
+    }
+    response {
+        code 0 : integer
+        move 1 : sMove
+    }
+}

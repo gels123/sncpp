@@ -1,0 +1,5 @@
+运行genMapRelease.lua
+
+通过 EditMapMask.lua 和 EditMapRailwayServer.lua 生成
+
+chunckmap.lua  zoneconnect.lua posmap.lua 三个文件

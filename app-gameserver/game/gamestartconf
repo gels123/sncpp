@@ -1,0 +1,93 @@
+root = "./"
+
+--设置lua路径
+path =
+	"./?.lua;" ..
+	"../framework/lib/?.lua;" ..
+	"../framework/lib/quickframework/?.lua;" ..
+	"../framework/lib/lua-json/?.lua;" ..
+	"../framework/lib/lua-zset/?.lua;" ..
+	"../framework/lib/lua-zlib/?.lua;" ..
+	"../framework/lib/lua-timer/?.lua;" ..
+	"../framework/lib/lua-chash/?.lua;" ..
+	"../framework/lib/lua-treemap/?.lua;" ..
+	"../framework/lib/lua-mapsearch/?.lua;" ..
+	"../framework/lib/lua-protobuf/?.lua;" ..
+	"../framework/lib/lua-aoi/?.lua;" ..
+	"../framework/lib/lua-aoi2/simple/?.lua;" ..
+	"../framework/lib/lua-aoi2/link/?.lua;" ..
+	"../framework/lib/lua-socket/?.lua;" ..
+	"../framework/lib/lua-fsm/?.lua;" ..
+	"../framework/lib/lua-conhash/?.lua;" ..
+	"../framework/lib/luaecs/?.lua;" ..
+	"../framework/lib/ecs/src/?.lua;" ..
+	"../framework/lib/ecs-tiny/?.lua;" ..
+	"game/?.lua;" ..
+	"game/conf/?.lua;" ..
+	"game/const/?.lua;" ..
+	"game/service/?.lua;" ..
+	"game/service/testService/?.lua;" ..
+	"game/service/localData/?.lua;" ..
+	"game/service/localData/localTb/?.lua;" ..
+	"game/service/db/?.lua;" ..
+	"game/service/redis/?.lua;" ..
+	"game/service/mylogger/?.lua;" ..
+	"game/service/serverStart/?.lua;" ..
+	"game/service/proto/?.lua;" ..
+	"game/service/playerDataCenter/?.lua;" ..
+	"game/service/gate/?.lua;" ..
+	"game/service/elasticSearch/?.lua;" ..
+	"game/service/logService/?.lua;" ..
+	"game/service/event/?.lua;" ..
+    "game/service/cache/?.lua;" ..
+	"game/service/search/?.lua;" ..
+	"game/service/search/core/?.lua;" ..
+	"game/service/aoi/?.lua;" ..
+	"game/service/simulate/?.lua;" ..
+	"game/service/maprpg/?.lua;" ..
+	"game/service/queue/?.lua;" ..
+	"game/service/queue/obj/?.lua;" ..
+	"game/service/queue/aoi/?.lua;" ..
+	"game/service/agentPool/?.lua;" ..
+	"game/service/agent/?.lua;" ..
+	"game/service/agent/module/gm/?.lua;" ..
+	"game/service/agent/module/cond/?.lua;" ..
+	"game/service/agent/module/cond/conditions/?.lua;" ..
+	"game/service/agent/module/login/?.lua;" ..
+	"game/service/agent/module/lord/?.lua;" ..
+	"game/service/agent/module/item/?.lua;" ..
+	"game/service/agent/module/buff/?.lua;" ..
+	"game/service/agent/module/map/?.lua;" ..
+	"game/service/agent/module/rpg/?.lua;" ..
+	"game/service/pvp/gate/?.lua;" ..
+	"game/service/pvp/frame/?.lua;" ..
+	"game/service/mailService/?.lua;" ..
+	"game/service/rank/?.lua;" ..
+	"game/service/alertService/?.lua;" ..
+	"game/service/global/?.lua;"
+
+
+
+--设置lua_cpath第三方库的路径
+third_path =
+    "../bin/?.so;"
+
+
+--启动配置
+thread = 16
+logger = "myloggers"
+logservice = "snlua"
+logpath = "."
+harbor = 0
+start = "main"
+--start = "testmain"
+bootstrap = "snlua bootstrap"
+cpath = "../framework/skynet/cservice/?.so;" .. "../framework/lib/lua-enet/?.so;"
+lua_path = "../framework/skynet/lualib/?.lua;" .. "../framework/skynet/lualib/compat10/?.lua;" .. path
+lua_cpath = "../framework/skynet/luaclib/?.so;" .. third_path
+lualoader = "../framework/skynet/lualib/loader.lua"
+luaservice = "../framework/skynet/service/?.lua;" .. path
+cluster = "./game/conf/clusterconf.lua"
+preload = "./game/preload.lua"
+-- snax = "../framework/skynet/examples/?.lua;" .. "../framework/skynet/test"
+-- daemon = "skynet.pid"

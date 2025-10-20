@@ -1,0 +1,114 @@
+################################### 邮件模块协议[501-550] ###################################
+#请求邮件封面数据
+reqCovers 501 {
+    response {
+        code 0 : integer                    #错误码
+        covers 1 : *sMailCover(settype)     #邮件封面数据
+    }
+}
+
+#请求邮件简要信息
+reqMailBrief 502 {
+    request {
+        settype 0 : integer     #集合类型
+        begin 1 : integer       #起始位置
+        over 2 : integer        #结束位置
+    }
+    response {
+        code 0 : integer        #错误码
+        settype 1 : integer     #集合类型
+        begin 2 : integer       #起始位置
+        over 3 : integer        #结束位置
+        mails 4 : *sMailCell    #邮件简要信息
+        cover 5 : sMailCover    #邮件封面信息
+        autoViewMids 6 : *integer #本次请求自动已读的邮件ID, 客户端显示小红点用, 目前只采集邮件有
+    }
+}
+
+#请求邮件详细信息/查看分享邮件
+reqMailDetail 503 {
+    request {
+        settype 0 : integer     #集合类型
+        mid 1 : integer         #邮件id
+        shareUid 2 : integer    #查看分享邮件时, 传邮件归属者uid
+    }
+    response {
+        code 0 : integer        #错误码
+        settype 1 : integer     #集合类型
+        mid 2 : integer         #邮件id
+        shareUid 6 : integer    #查看分享邮件时, 传邮件归属者uid
+        cover 4 : sMailCover    #邮件封面信息
+        detail 3 : sMailDetail  #邮件详细信息
+        brief 5 : string        #简要标题信息(查看分享邮件时)
+        cfgid 7 : integer       #邮件id(查看分享邮件时)
+    }
+}
+
+#请求删除邮件
+reqDelMail 504 {
+    request {
+        settype 0 : integer     #集合类型
+        mids 1 : *integer       #邮件ids
+    }
+    response {
+        code 0 : integer        #错误码
+        settype 1 : integer     #集合类型
+        mids 2 : *integer       #成功删除的邮件ids
+        cover 3 : sMailCover    #邮件封面信息
+    }
+}
+
+#请求一键删除邮件
+reqDelMailOneKey 505 {
+    request {
+        settype 0 : integer     #集合类型
+    }
+    response {
+        code 0 : integer        #错误码
+        settype 1 : integer     #集合类型
+        mids 2 : *integer       #成功的邮件ids
+        cover 3 : sMailCover    #邮件封面信息
+    }
+}
+
+#请求领取邮件附件
+reqGetMailExtra 506 {
+    request {
+        mid 0 : integer         #邮件id
+        settype 1 : integer     #集合类型
+    }
+    response {
+        code 0 : integer        #返回码
+        settype 1 : integer     #集合类型
+        mid 2 : integer         #邮件id
+        cover 3 : sMailCover    #邮件封面信息
+        extra 4 : sMailExtra      #附件奖励
+    }
+}
+
+#请求一键领取邮件附件
+reqGetMailExtraOneKey 507 {
+    request {
+        settypes 0 : *integer    #集合类型
+    }
+    response {
+        code 0 : integer        #错误码
+        mids 1 : *integer       #成功的邮件ids
+        covers 2 : *sMailCover  #邮件封面数据
+        extras 3 : sMailExtra   #附件奖励
+    }
+}
+
+#请求收藏邮件
+reCollectMail 508 {
+    request {
+        mid 0 : integer         #邮件id
+        settype 1 : integer     #集合类型
+    }
+    response {
+        code 0 : integer        #错误码
+        mid 1 : integer         #邮件id
+        settype 2 : integer     #集合类型
+        covers 3 : *sMailCover   #邮件封面数据
+    }
+}

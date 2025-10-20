@@ -1,0 +1,206 @@
+local queueConf = require "queueConf"
+local queueConf = require "queueConf"
+local mapLib = require "mapLib"
+local queueLib = require "queueLib"
+local clientCmd =  require "clientCmd"
+
+--[[
+	请求创建行军队列
+]]
+function clientCmd.reqMarch(player, req)
+	--gLog.dump(req, "clientCmd.reqMarch playerid="..tostring(player:get_playerid()), 10)
+	--local mapmod = player:mapmodule()
+	--local sq = mapmod:getSq()
+    --return sq(function()
+    --	local ret = {}
+	--	local code = gErrDef.success
+    --
+	--	repeat
+	--		-- 参数校验
+    --        if not req.queueType or not req.toX or not req.toY or not req.toMapType then
+    --            gLog.d("clientCmd.reqMarch err1")
+    --            code = gErrDef.error_param
+    --            break
+    --        end
+    --        -- 视野在原服, 才能创建队列
+    --        local kid = svrconf.kid
+	--		local node = config.get_server_cluster(kid)
+	--		if not node then
+    --            gLog.d("clientCmd.reqMarch err2")
+	--			code = gErrDef.not_servre
+	--			break
+	--		end
+	--		local mapaddr = get_remote_service(node).worldMapService
+    --        if not mapaddr or mapaddr ~= mapmod:get_watcher_addr() then
+    --            gLog.d("clientCmd.reqMarch err3")
+    --            code = gErrDef.not_watcher
+    --            break
+    --        end
+    --        -- 获取配置
+    --        local marchCfg = get_static_config().march[req.queueType]
+    --        if not marchCfg then
+    --            gLog.d("clientCmd.reqMarch err4")
+    --            code = gErrDef.error_param
+    --            break
+    --        end
+    --        -- 检查战争阵容,军队
+    --        local code2 = clientCmd.checkLineup(req)
+    --        if code2 ~= gErrDef.success then
+    --            gLog.d("clientCmd.reqMarch err5")
+    --            code = code2 or gErrDef.error_server
+    --            break
+    --        end
+    --        -- 校验创建行军队列(地图服)
+    --        local code2, mapObj = mapLib:checkMarch(kid, req)
+    --        if code2 ~= gErrDef.success or not mapObj then
+    --            gLog.d("clientCmd.reqMarch err5")
+    --            code = code2 or gErrDef.error_server
+    --            break
+    --        end
+    --        gLog.dump(mapObj, "clientCmd.reqMarch mapObj=", 10)
+    --        -- 校验创建行军队列
+    --        local code2 = self:checkMarch(req, mapObj)
+    --        if code2 ~= gErrDef.success or not mapObj then
+    --            gLog.d("clientCmd.reqMarch err5")
+    --            code = code2 or gErrDef.error_server
+    --            break
+    --        end
+    --        -- 扣除体力
+    --        -- 扣除兵力
+    --        -- 组织队列数据
+    --        -- 构造创建行军队列所需的参数
+    --        local params = {
+    --            uid = player:get_playerid(),
+    --            queueType = req.queueType,
+    --            ---- from ----
+    --            fromX = mapmod:getX(),
+    --            fromY = mapmod:getY(),
+    --            ---- to ----
+    --            toId = req.oId,
+    --            toX = req.toX,
+    --            toY = req.toY,
+    --            toMapType = req.toMapType,
+    --            toSubMapType = mapObj.subMapType,
+    --            toUid = toUid,
+    --            toBelongAid = toBelongAid,
+    --            toRefreshId = mapObj.refreshId,
+    --            toCfgId = toCfgId,
+    --            ---- display ----
+    --            marchEffect = marchEffect, -- 行军特效
+    --            ---- army ----
+    --            availableArmy = army,
+    --            hero = heroDataList,
+    --            pet = petData,
+    --            ---- mass ----
+    --            massTime = massTime,
+    --            mainQid = mainId,
+    --            maxMassNum = maxMassNum,
+    --            maxMassPlayer = maxMassPlayer,
+    --            massLimit = massLimit,
+    --            ---- collectMine ----
+    --            spoils = spoils,
+    --            physical = physical,
+    --            ---- status ----
+    --            speedupLock = speedupLock,
+    --        }
+    --        gLog.dump(params, "clientCmd.reqMarch params=", 10)
+    --
+    --        local code2, qid = queueLib:reqMarch(kid, params)
+    --        if code2 ~= gErrDef.success then
+    --            gLog.d("clientCmd.reqMarch err5")
+    --            code = code2 or gErrDef.error_server
+    --            -- 返还体力
+    --            -- 返还兵力
+    --            break
+    --        end
+    --    until true
+    --
+    --    ret.code = code
+    --    return ret
+    --end)
+end
+
+--行军加速
+function clientCmd.reqSpeedQueue(queueId, mode, itemId)
+    --if not queueId or not mode or not itemId or mode ~= BUILD_EXCHANGE_MODE.TOOLS and mode ~= BUILD_EXCHANGE_MODE.GOLD then
+    --    return gErrDef.Err_ILLEGAL_PARAMS
+    --end
+    --local itemResultType = backpackltCtrl:getResultType(itemId)
+    --if itemResultType ~= gItemEffectDef.MARCH_SPEED_UP then
+    --    return gErrDef.Err_MAP_QUEUE_ITEM_ERROR
+    --end
+    ---- 执行加速
+    --local uid = player:getUid()
+    --local kid = player:getKingdomId()
+    --local reduceTimeRate = backpackltCtrl:getResult(itemId)
+    --local err, tempJson = kingdomQueueLib:reqSpeedQueue(kid, uid, queueId, reduceTimeRate)
+    --if err and err ~= gErrDef.Err_OK then
+    --    return err
+    --end
+    ---- 扣除物品
+    --if mode == BUILD_EXCHANGE_MODE.TOOLS then
+    --    local ok, err = backpackCtrl:useItem(itemId, 1)
+    --    if not ok then
+    --        return err
+    --    end
+    --elseif mode == BUILD_EXCHANGE_MODE.GOLD then
+    --    local ok, err = shopCtrl:buyAndUseInItemShop(itemId, 1)
+    --    if not ok then
+    --        return err
+    --    end
+    --end
+    ----发送统计通知
+    --if mode == BUILD_EXCHANGE_MODE.TOOLS then
+    --    notifyMgr.sharedInstance():notify(gEventName.event_speed, {speedtype=gSpeedLogType.march,targetId=queueId,spenttype=gSpeedConsumerLogType.goods,itemid=itemId,itemnum=1,tempJson=tempJson})
+    --elseif mode == BUILD_EXCHANGE_MODE.GOLD then
+    --    local shopItem = shopltCtrl:getShopItemByItemID(itemId)
+    --    if shopItem and shopItem.price then
+    --        notifyMgr.sharedInstance():notify(gEventName.event_speed, {speedtype=gSpeedLogType.march,targetId=queueId,spenttype=gSpeedConsumerLogType.gold,money=shopItem.price,tempJson=tempJson})
+    --    end
+    --end
+    --return gErrDef.Err_OK
+end
+
+--行军召回
+function clientCmd.reqRecallQueue(queueId, mode, itemId)
+    --gLog.i("clientCmd.reqRecallQueue", queueId, mode, itemId)
+    --if mode ~= BUILD_EXCHANGE_MODE.TOOLS and mode ~= BUILD_EXCHANGE_MODE.GOLD then
+    --    return gErrDef.Err_ILLEGAL_PARAMS
+    --end
+    --local kid, uid = player:getKingdomId(), player:getUid()
+    --local queueData = kingdomQueueLib:queryQueue(kid, queueId, {"queueType"})
+    --if not queueData then
+    --    return gErrDef.Err_MAP_QUEUE_NOT_FOUND
+    --end
+    --local queueType = queueData.queueType
+    ---- 检测消耗物品类型
+    --local itemResultType = backpackltCtrl:getResultType(itemId)
+    --if queueAttr:checkAttr(queueType, gQueueAttr.mass) then -- 集结队列需要高级召回
+    --    if itemResultType ~= gItemEffectDef.HIGH_MARCH_BACK then
+    --        return gErrDef.Err_MAP_QUEUE_ITEM_ERROR
+    --    end
+    --else
+    --    if itemResultType ~= gItemEffectDef.MARCH_BACK then
+    --        return gErrDef.Err_MAP_QUEUE_ITEM_ERROR
+    --    end
+    --end
+    ---- 执行召回
+    --local err = kingdomQueueLib:reqRecallQueue(kid, uid, queueId)
+    --if err and err ~= gErrDef.Err_OK then
+    --    return err
+    --end
+    ----扣除物品
+    --local ok
+    --if mode == BUILD_EXCHANGE_MODE.TOOLS then
+    --    ok, err = backpackCtrl:useItem(itemId, 1)
+    --    if not ok then
+    --        return err
+    --    end
+    --elseif mode == BUILD_EXCHANGE_MODE.GOLD then
+    --    ok, err = shopCtrl:buyAndUseInItemShop(itemId, 1)
+    --    if not ok then
+    --        return err
+    --    end
+    --end
+    --return gErrDef.Err_OK
+end

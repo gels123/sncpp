@@ -1,0 +1,9 @@
+*.o
+.startsuccess*
+.idea/
+/logs/*
+/cmake-build-debug
+/testmain
+/app-gameserver/dbconflocal.lua
+/app-loginserver/dbconflocal.lua
+/app-globalserver/dbconflocal.lua

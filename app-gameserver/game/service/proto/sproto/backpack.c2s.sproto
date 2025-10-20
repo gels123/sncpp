@@ -1,0 +1,54 @@
+################################### 背包/道具协议[201-250] ###################################
+#背包道具数据结构
+.sBackpackInfo {
+    type 0 : integer                #背包类型
+    maxSize 1 : integer             #背包最大容量
+    items 2 : *sItemInfo            #背包道具
+}
+
+#请求背包信息
+reqBackpackInfo 201 {
+    response {
+        code 0 : integer
+        backpacks 1 : *sBackpackInfo(type)
+    }
+}
+
+
+#使用一种物品
+reqUseItem 202 {
+    request {
+        id 0 : integer               #道具ID
+        count 1 : integer            #道具数量
+    }
+    response {
+        code 0 : integer
+        id 1 : integer               #道具ID
+        count 2 : integer            #道具数量
+        extra 3 : *sItemInfoBrief    #道具获得
+    }
+}
+
+#使用多种种物品
+reqUseItems 203 {
+    request {
+        items 0 : *sItemInfoBrief    #道具ID
+    }
+    response {
+        code 0 : integer
+        extra 1 : *sItemInfoBrief    #道具获得
+    }
+}
+
+#丢弃物品
+reqDeductItem 204 {
+     request {
+        id 0 : integer               #道具ID
+        count 1 : integer            #道具数量
+    }
+    response {
+        code 0 : integer
+        id 1 : integer               #道具ID
+        count 2 : integer            #道具数量
+    }
+}

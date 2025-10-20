@@ -1,0 +1,18 @@
+################################### 邮件模块协议[501-550] ###################################
+#新邮件
+newMail 500 {
+    request {
+        settype 0 : integer     #邮件集合类型
+        cover 1 : sMailCover    #邮件集合信息
+        cell 2 : sMailCell      #邮件简要信息
+    }
+}
+
+#删除邮件
+removeMail 499 {
+    request {
+        settype 0 : integer     #邮件集合类型
+        mids 1 : integer        #邮件ids
+        cover 2 : sMailCover    #邮件集合信息
+    }
+}

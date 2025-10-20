@@ -1,0 +1,24 @@
+################################### pvp战场模块协议[51-100] ###################################
+#推送登出
+notifyPvpLogout 100 {
+    request {
+        flag 0 : integer #0=断网 1=战场结束
+    }
+}
+
+#推送战场信息
+notifyPvpInfo 99 {
+     request {
+        info 0 : sPvpInfo
+	}
+}
+
+#推送帧指令
+notifyPvpCmd 98 {
+     request {
+        f 0 : integer           #当前帧数
+        fs 1 : *sPvpCmd(uid)    #当前帧指令
+        batId 2: string
+	}
+}
+

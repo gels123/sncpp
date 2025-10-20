@@ -1,0 +1,11 @@
+################################### gm指令模块协议[251-300] ###################################
+#请求使用gm指令
+reqGmCmd 251 {
+    request {
+        text 0 : string  #gm命令内容 eg：/modifyattr energy -10
+    }
+    response {
+        code 0 : integer
+        msg 1 : string
+    }
+}

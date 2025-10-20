@@ -1,0 +1,14 @@
+################################### 背包/道具协议[201-250] ###################################
+#道具数据更新结构
+.sItemInfoUpdate {
+    idx 0 : integer             #道具数组索引
+    item 1 : sItemInfo          #道具数据(无此字段=>删除, 有此字段=>增加or更新)
+}
+
+#通知增加/更新/删除物品
+notifyUpdateItemInfo 250 {
+    request {
+        type 0 : integer            #背包类型
+        items 1 : *sItemInfoUpdate  #增加/更新物品信息
+    }
+}

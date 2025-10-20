@@ -1,0 +1,23 @@
+################################### 微服务模块协议[601-700] ###################################
+#通知更新好友申请
+notifyApply 699 {
+    request {
+        add 0 : sApply           #新增好友申请
+    }
+}
+
+#通知更新好友
+notifyFriend 698 {
+    request {
+        add 0 : sFriend         #新增好友信息
+        del 1 : sFriend         #删除好友信息
+    }
+}
+
+#通知更新好友
+notifyChat 697 {
+    request {
+        id 0 : string           #新增好友信息
+        msg 1 : sChatMsg        #删除好友信息
+    }
+}

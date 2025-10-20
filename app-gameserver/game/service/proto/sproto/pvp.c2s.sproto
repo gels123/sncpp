@@ -1,0 +1,89 @@
+################################### pvp战场模块协议[51-100] ###################################
+#请求握手(gate处理)
+reqPvpHandshake 51 {
+    request {
+        uid 0 : integer
+        index 1 : integer
+        hmac 2 : string
+        batId 3 : string
+    }
+    response {
+        code 0 : integer
+        subid 1 : integer
+        text 2 : string
+    }
+}
+
+#请求心跳
+reqPvpHeartbeat 52 {
+    response {
+        time 0 : integer
+    }
+}
+
+#请求更改心跳开关
+reqPvpHeartbeatSwitch 53 {
+    request {
+        close 0 : boolean
+    }
+    response {
+        code 0 : integer
+        close 1 : boolean
+    }
+}
+
+#请求创建战场
+reqCreateBattle 54 {
+    request {
+        batId 1 : string
+        users 2 : *sPvpUserInfo(uid)
+        rate 3 : integer
+        time 4 : integer
+	}
+	response {
+		code 0 : integer
+		batId 1 : string
+        info 2 : sPvpInfo
+	}
+}
+
+#请求准备完成
+reqPrepare 55 {
+    request {
+        batId 0 : string
+	}
+	response {
+		code 0 : integer
+	}
+}
+
+#请求加载场景完成
+reqLoad 56 {
+    request {
+        batId 0 : string
+	}
+	response {
+		code 0 : integer
+	}
+}
+
+#请求退出战场
+reqLeave 57 {
+    request {
+        batId 0 : string
+	}
+	response {
+		code 0 : integer
+	}
+}
+
+#请求提交帧指令
+reqCommitCmd 58 {
+    request {
+        batId 0 : string
+        cmd 1 : sPvpCmd
+	}
+	response {
+		code 0 : integer
+	}
+}

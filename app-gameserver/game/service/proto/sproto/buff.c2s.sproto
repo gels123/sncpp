@@ -1,0 +1,8 @@
+################################### buff模块协议[151-200] ###################################
+#请求buff信息
+reqBuffInfo 151 {
+    response {
+        code 0 : integer
+        buffs 1 : *sBuffInfo(effect)
+    }
+}

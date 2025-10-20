@@ -1,0 +1,168 @@
+################################### 公共类型定义 ###################################
+.package {
+    type 0 : integer
+    session 1 : integer
+}
+
+.sIntInt {
+    key 0: integer
+    value 1: integer
+}
+
+.sIntString {
+    key 0: integer
+    value 1: string
+}
+
+.sStringString {
+    key 0: string
+    value 1: string
+}
+
+#坐标数据结构
+.sPos {
+    x 0 : integer
+    y 1 : integer
+}
+
+#npc数据结构
+.sNpc {
+    npcId 0 : integer           #唯一ID
+    name 1 : string             #名字
+    sex 2 : integer             #性别
+    age 3 : integer             #年龄
+    job 4 : integer             #职业
+    faces 5 : *integer          #捏脸数据
+    equips 6 : *integer         #装备数据
+    state 7 : integer           #状态
+    subState 8 : integer        #子状态
+    stateStartTime 9 : integer  #状态开始时间
+    stateEndTime 10 : integer   #状态结束时间
+}
+
+#领主数据结构
+.sLordInfo {
+    uid 0 : integer             #玩家ID
+    kid 1 : integer             #玩家当前王国ID
+    sKid 2 : integer            #玩家原始王国ID
+    iconId 3 : integer          #玩家头像
+    name 4 : string             #玩家昵称
+    aid 5 : integer             #玩家联盟ID
+    maxNpcNum 6 : integer       #最大npc数量
+    npcs 7 : *sNpc(npcId)       #玩家npc列表
+}
+
+#道具数据结构
+.sItemInfo {
+    id 0 : integer              #道具ID
+    count 1 : integer           #道具数量
+    overdue 2 : integer         #道具过期时间
+}
+
+#道具数据简要结构
+.sItemInfoBrief {
+    id 0 : integer              #道具ID
+    count 1 : integer           #道具数量
+}
+
+#npc数据结构
+.sNpcInfo {
+    tp 0 : integer
+    curCap 1 : integer
+    items 2 : *sItemInfo
+}
+
+#单个buff结构
+.sBuffCell {
+    buffId 0 : integer   #ID
+    source 1 : integer   #来源
+    effect 2 : integer   #效果
+    value 3 : integer    #效果值
+    endTime 4 : integer  #结束时间
+}
+
+#玩家buff结构
+.sBuffInfo {
+    effect 0 : integer   #效果
+    value 1 : integer    #效果值
+    detail 2 : *sBuffCell(buffId)
+}
+
+#邮件集合结构
+.sMailCover {
+    settype 0 : integer     #邮件集合类型
+    totalNum 1 : integer    #邮件集合总数
+    notViewNum 2 : integer  #邮件集合未读邮件总数
+    hasExtraNum 3 : integer #邮件集合有未领取附件邮件总数
+}
+
+#邮件集合下的邮件简要信息结构
+.sMailCell {
+    mid 0 : integer           #邮件id
+    cfgid 1 : integer         #邮件配置id
+    hasExtra 2 : boolean      #是否有奖励
+    isGetExtra 3 : boolean    #是否已领奖
+    isView 4 : boolean        #是否已查看
+    isLock 5 : boolean        #是否已锁定
+    brief 6 : string          #简要标题信息(json)
+}
+
+#邮件附件奖励结构
+.sMailExtra {
+    items 0 : *sItemInfoBrief    #道具
+}
+
+#邮件详细信息结构
+.sMailDetail {
+    more 0 : string           #更多信息(json)
+    text 1 : string           #纯文本
+    extra 2 : sMailExtra      #附件奖励
+}
+
+#好友申请信息
+.sApply {
+    uid 0 : integer              #申请者uid
+    time 1 : integer             #申请时间
+}
+
+#好友信息
+.sFriend {
+    uid 0 : integer              #好友uid
+    time 1 : integer             #更新时间
+    top 2 : boolean              #是否置顶
+}
+
+#聊天消息结构
+.sChatMsg {
+    idx 0 : integer      #消息idx
+    uid 1 : integer      #玩家id
+    tp 2 : integer       #消息类型(1=文本 2=图片 3=语音 4=表情 5=跑马灯)
+    txt 3 : string       #消息文本或json文本
+}
+
+#pvp战场用户信息结构
+.sPvpUserInfo {
+    uid 0 : integer      #玩家ID
+    camp 1 : integer     #阵营
+    status 2 : integer   #玩家状态
+}
+
+#pvp战场信息结构
+.sPvpInfo {
+    status 0 : integer   #战场状态
+    info 1 : *sPvpUserInfo(uid) #战场玩家信息
+}
+
+#pvp战场帧指令
+.sPvpCmd {
+    uid 0 : integer      #玩家
+    f 1 : integer        #发送帧号
+    tp 2 : integer       #指令类型
+    str 3 : string       #字符串参数
+}
+
+#pvp战场帧指令
+.sPvpCmds {
+    f 0 : integer        #帧号
+    fs 1 : sPvpCmd       #帧指令
+}

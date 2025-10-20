@@ -1,0 +1,9 @@
+################################### buff模块协议[151-200] ###################################
+#推送更新buff
+notifyUpdateBuff 200 {
+    request {
+        effect 0 : integer   #效果
+        value 1 : integer    #效果值
+        cell 2 : sBuffCell   #有effect=>更新, 无effect=>删除
+    }
+}

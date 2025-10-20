@@ -1,0 +1,83 @@
+################################### 微服务模块协议[601-700] ###################################
+#黑名单信息
+.sBlack {
+    uid 0 : integer              #黑名单uid
+    time 1 : integer             #更新时间
+}
+
+#聊天房间信息
+.sRoom {
+    id 0 : integer               #黑名单uid
+}
+
+#请求握手
+handshake 601 {
+    request {
+        uid 0 : integer         #玩家id
+        index 1 : integer       #连接索引,第一次连接传1,每次断线重连+1
+        hmac 2 : string         #签名
+    }
+    response {
+        code 0 : integer        #错误码
+        text 1 : string         #错误文本
+        subid 2 : integer       #连接id
+    }
+}
+
+#请求聊天/好友信息
+reqChatInfo 610 {
+    request {
+        uid 0 : integer          #玩家uid
+    }
+    response {
+        code 0 : integer         #错误码
+        friends 1 : *sFriend(uid) #好友列表
+        apply 2 : *sApply(uid)   #好友申请列表
+        blacks 3 : *sBlack(uid)  #黑名单
+        rooms 4 : sRoom          #聊天房间信息
+    }
+}
+
+#请求添加好友
+reqApply 611 {
+    request {
+        uid 0 : integer          #玩家uid
+    }
+    response {
+        code 0 : integer         #错误码
+    }
+}
+
+#回应添加好友
+reqRspApply 612 {
+    request {
+        uid 0 : integer          #玩家uid
+        flag 1 : boolean         #标识 true=同意 false=拒绝
+    }
+    response {
+        code 0 : integer         #错误码
+    }
+}
+
+#请求添加/删除黑名单
+reqSetBlacks 613 {
+    request {
+        uid 0 : integer          #玩家uid
+        flag 1 : boolean         #标识 true=添加 false=删除
+    }
+    response {
+        code 0 : integer         #错误码
+    }
+}
+
+#请求发送聊天消息
+reqChat 614 {
+    request {
+        uid 0 : integer          #对象玩家uid
+        roomId 1 : string        #对象聊天室id
+        msg 2 : sChatMsg         #聊天消息
+    }
+    response {
+        code 0 : integer         #错误码
+    }
+}

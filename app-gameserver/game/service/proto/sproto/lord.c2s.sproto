@@ -1,0 +1,54 @@
+################################### 领主模块协议[101-150] ###################################
+#请求领主信息
+reqLordInfo 101 {
+    response {
+        code 0 : integer
+        lordInfo 1 : sLordInfo
+    }
+}
+
+#请求修改领主信息
+reqModifyLordInfo 102 {
+    request {
+        iconId 0 : integer          #玩家头像
+        name 1 : string             #玩家昵称
+    }
+    response {
+        code 0 : integer
+        iconId 1 : integer
+        name 2 : string
+    }
+}
+
+#请求创建角色
+reqCreateNpc 103 {
+    request {
+        info 0 : sNpc
+    }
+    response {
+        code 0 : integer
+        info 1 : sNpc
+    }
+}
+
+#请求解散角色
+reqDeleteNpc 104 {
+    request {
+        npcId 0 : integer           #唯一ID
+    }
+    response {
+        code 0 : integer
+        npcId 1 : integer
+    }
+}
+
+#请求更新角色状态
+reqUpdateNpc 105 {
+    request {
+        info 0 : sNpc
+    }
+    response {
+        code 0 : integer
+        info 1 : sNpc
+    }
+}

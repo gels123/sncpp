@@ -1,0 +1,21 @@
+################################### rpg模块协议[701-800] ###################################
+#坐标数据结构
+.sMove {
+    t 0 : double
+    x 1 : double
+    z 2 : double
+    vx 3 : double
+    vz 4 : double
+}
+
+.sUidMove {
+    uid 0 : integer
+    move 1 : sMove
+}
+
+#同步移动
+notifyRpgMove 799 {
+     request {
+        mv 0 : *sUidMove
+	}
+}

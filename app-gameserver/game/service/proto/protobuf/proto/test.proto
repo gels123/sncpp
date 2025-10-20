@@ -1,0 +1,9 @@
+syntax = "proto3";
+package testpb;
+
+// 测试消息
+message TestPack
+{
+    uint64 uid = 1; // 玩家ID
+    string name = 2; // 昵称
+}

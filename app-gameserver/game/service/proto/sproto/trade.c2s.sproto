@@ -1,0 +1,71 @@
+################################### 拍卖行模块[551-600] ###################################
+#拍卖物信息
+.sGoodInfo {
+    idx 0 : string
+    uid 1 : integer
+    type 2 : integer
+    id 3 : integer
+    count 4 : integer
+    gold 5 : integer
+}
+
+#查询自己的拍卖物
+reqGoodsInfo 551 {
+    response {
+        code 0 : integer
+        goods 1 : *sGoodInfo(idx)
+    }
+}
+
+#添加拍卖物
+reqAddGoods 552 {
+    request {
+        id 0 : integer
+        count 1 : integer
+        gold 2 : integer
+    }
+    response {
+        code 0 : integer
+        good 1 : sGoodInfo
+    }
+}
+
+#撤回拍卖物
+reqRemGoods 553 {
+    request {
+        idx 0 : string
+    }
+    response {
+        code 0 : integer
+    }
+}
+
+#购买拍卖物
+reqBuyGoods 554 {
+    request {
+        sellUid 0 : integer
+        type 1 : integer
+        idx 2 : string
+        id 3 : integer
+        gold 4 : integer
+    }
+    response {
+        code 0 : integer
+    }
+}
+
+#查询拍卖物
+reqQueryGoods 555 {
+    request {
+        type 0 : integer
+        idx1 1 : integer
+        idx2 2 : integer
+    }
+    response {
+        code 0 : integer
+        type 1 : integer
+        idx1 2 : integer
+        idx2 3 : integer
+        goods 4 : *sGoodInfo
+    }
+}
