@@ -7,3 +7,4 @@
 /app-gameserver/dbconflocal.lua
 /app-loginserver/dbconflocal.lua
 /app-globalserver/dbconflocal.lua
+docker/standalone-logs/
