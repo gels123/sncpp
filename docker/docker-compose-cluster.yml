@@ -1,0 +1,41 @@
+# 工程根目录运行: 
+# docker stack deploy -c docker/docker-compose-cluster.yml snpp-stack
+# docker stack ls
+
+services:
+  # 游戏服务器1
+  snpp-gameserver1:
+    image: snpp
+    container_name: snpp-gameserver1
+    volumes:
+      - ${PWD}/app-gameserver:/apps/snpp/app
+      - ${PWD}/app-gameserver1/logs:/apps/snpp/app/logs
+      - ${PWD}/framework:/apps/snpp/framework
+    environment:
+      - TZ=UTC
+    networks:
+      - snpp-network
+    deploy:
+      replicas: 1
+
+
+  # 游戏服务器2
+  snpp-gameserver2:
+    image: snpp
+    container_name: snpp-gameserver2
+    volumes:
+      - ${PWD}/app-gameserver:/apps/snpp/app
+      - ${PWD}/app-gameserver2/logs:/apps/snpp/app/logs
+      - ${PWD}/framework:/apps/snpp/framework
+    environment:
+      - TZ=UTC
+    networks:
+      - snpp-network
+    deploy:
+      replicas: 1
+
+networks:
+  snpp-network:
+    # driver: overlay
+    driver: bridge
+    attachable: true

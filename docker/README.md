@@ -18,6 +18,7 @@ $ docker run -it --name snpp-gameserver -v ./app-gameserver:/apps/snpp/app snpp
 #framework目录若无修改可不映射
 $ docker run -it --name snpp-gameserver -v ./app-gameserver:/apps/snpp/app -v ./framework:/apps/snpp/framework -v ./logs/gameserver:/apps/snpp/app/logs snpp
 $ docker-compose -f ./docker/docker-compose.yml up
+$ docker-compose -f ./docker/docker-compose.yml --env-file .env up #指定环境变量文件
 ```
 
 ## How Build

@@ -1,0 +1,78 @@
+# 工程根目录运行: 
+# docker-compose -f ./docker/docker-compose-env.yml up
+# docker-compose -f ./docker/docker-compose-env.yml down
+
+services:
+  redis-simple:
+    image: bitnami/redis
+    container_name: redis-simple
+    volumes:
+      - snpp-redis-data:/bitnami/redis
+      - ~/app/redis/logs:/bitnami/redis/logs
+      - ~/app/redis/logs:/opt/bitnami/redis/logs
+    environment:
+      - TZ=UTC
+      - REDIS_PASSWORD=1
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL,CONFIG,KEYS
+      - maxmemory
+    ports:
+      - "6380:6379"
+    networks:
+      - snpp-network
+    restart: unless-stopped
+ 
+  mongodb-simple:
+    image: bitnami/mongodb
+    container_name: mongodb-simple
+    volumes:
+      - snpp-mongodb-data:/bitnami/mongodb
+      - ~/app/mongodb/logs:/bitnami/mongodb/logs
+      - ~/app/mongodb/logs:/opt/bitnami/mongodb/logs
+    environment:
+      - TZ=UTC
+      - MONGODB_ADVERTISED_HOSTNAME=mongodb
+      - MONGODB_ROOT_USER=root
+      - MONGODB_ROOT_PASSWORD=1
+      - MONGODB_USERNAME=snpp
+      - MONGODB_PASSWORD=1
+      - MONGODB_DATABASE=snpp
+      - MONGODB_EXTRA_FLAGS=--wiredTigerCacheSizeGB=1
+    ports:
+      - "27018:27017"
+    networks:
+      - snpp-network
+    restart: unless-stopped
+
+  elasticsearch-simple:
+    image: elasticsearch:7.17.27
+    container_name: elasticsearch-simple
+    volumes:
+      - snpp-elasticsearch-data:/usr/share/elasticsearch/data
+      - ~/app/elasticsearch/logs:/usr/share/elasticsearch/logs
+    environment:
+      - TZ=UTC
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    networks:
+      - snpp-network
+    restart: unless-stopped
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+  
+volumes:
+  snpp-redis-data:
+    driver: local
+  snpp-mongodb-data:
+    driver: local
+  snpp-elasticsearch-data:
+    driver: local
+
+networks:
+  snpp-network:
+    driver: bridge
+
