@@ -1,0 +1,67 @@
+# Fluentd+Elasticsearch+Kibana
+
+services:
+  elasticsearch:
+    image: elasticsearch:7.17.27
+    container_name: elasticsearch
+    volumes:
+      - efk-data:/usr/share/elasticsearch/data
+      - ~/app/elasticsearch/logs:/usr/share/elasticsearch/logs
+    environment:
+      - TZ=UTC
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ports:
+      - "9200:9200"
+    networks:
+      - efk-network
+    restart: unless-stopped
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+
+  fluentd:
+    image: bitnami/fluentd
+    container_name: fluentd
+    volumes:
+      - ./fluent.conf:/opt/bitnami/fluentd/conf/fluentd.conf
+      - ~/app/fluentd/logs:/opt/bitnami/fluentd/log
+    network:
+      - efk-network
+    environment:
+      - TZ=UTC
+    ports:
+      - "24224:24224"
+      - "24224:24224/udp"
+    restart: unless-stopped
+
+  kibana:
+    image: bitnami/kibana
+    container_name: kibana
+    volumes:
+      - kibana-data:/bitnami/kibana
+      - ~/app/kibana/logs:/bitnami/kibana/logs
+    environment:
+      - TZ=UTC
+      - KIBANA_ELASTICSEARCH_URL=elasticsearch
+      - KIBANA_ELASTICSEARCH_PORT_NUMBER = 9200
+    ports:
+      - "5601:5601"
+    networks:
+      - efk-network
+    restart: unless-stopped
+  
+volumes:
+  efk-data:
+    driver: local
+  fluentd-data:
+    driver: local
+  kibana-data:
+    driver: local
+
+networks:
+  efk-network:
+    driver: bridge
+
